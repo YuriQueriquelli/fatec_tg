@@ -8,8 +8,8 @@ import os
 from unicodedata import normalize
 import csv
 
-driver_location = "/usr/local/bin/chromedriver"
-binary_location = "/usr/bin/google-chrome"
+driver_location = "../chromedriver"
+binary_location = "/usr/bin/google-chrome-stable"
 
 option = webdriver.ChromeOptions()
 option.binary_location = binary_location
