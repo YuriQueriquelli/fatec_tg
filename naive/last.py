@@ -8,6 +8,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import confusion_matrix
 
+#if you do not use linux, I'm sorry.
 data_formated = pd.read_csv(r'../db/vagas_formated_data.csv', sep = ';')
 data_general = pd.read_csv(r'../db/vagas_general_data.csv', sep = ';')
 
