@@ -126,7 +126,7 @@ for url in urls:
             continue
 
 
-with open('../db/vagas_formated_data.csv', 'w', newline='') as file:
+with open('../db/vagas_formated_data.csv', 'a', newline='') as file:
     writer = csv.writer(file, delimiter=';')
     writer.writerows(row_list)
 

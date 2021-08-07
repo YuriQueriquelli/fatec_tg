@@ -41,7 +41,9 @@ today = date.today()
 
 #Open webdriver and site vagas.com
 
-urls = ["https://www.vagas.com.br/vagas-de-campinas", "https://www.vagas.com.br/vagas-de-s%C3%A3o-paulo"]
+urls = ["https://www.vagas.com.br/vagas-de-campinas", "https://www.vagas.com.br/vagas-de-s%C3%A3o-paulo",
+         "https://www.vagas.com.br/vagas-de-Indaiatuba", "https://www.vagas.com.br/vagas-em-sao-paulo"
+         , "https://www.vagas.com.br/vagas-de-sorocaba", "https://www.vagas.com.br/vagas-de-Piracicaba"]
 
 row_list = [[ "Titulo", "link", "Descricao"]]
 
@@ -108,7 +110,7 @@ for url in urls:
             continue
 
 
-with open('../db/reports/vagas_general_data.csv', 'w', newline='') as file:
+with open('../db/reports/vagas_general_data.csv', 'a', newline='') as file:
     writer = csv.writer(file, delimiter=';')
     writer.writerows(row_list)
 
