@@ -8,9 +8,9 @@ import os
 from unicodedata import normalize
 import csv
 
+#specify chrome locations
 driver_location = "../chromedriver"
-binary_location = "/usr/bin/google-chrome-stable"
-
+binary_location = "/usr/bin/chromium"
 
 option = webdriver.ChromeOptions()
 option.binary_location = binary_location
@@ -33,15 +33,10 @@ def listToString(s):
 def remover_acentos(txt):
     return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
 
-if __name__ == '__main__':
-    from doctest import testmod
-    testmod()
-
 #today
 today = date.today()
 
 #Open webdriver and site vagas.com
-
 urls = ["https://www.vagas.com.br/vagas-de-ti", "https://www.vagas.com.br/vagas-de-An%C3%A1lise-e-Desenvolvimento-de-Sistemas", "https://www.vagas.com.br/vagas-de-Com%C3%A9rcio-Exterior", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-Empresarial", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-de-Servi%C3%A7os", "https://www.vagas.com.br/vagas-de-Log%C3%ADstica", "https://www.vagas.com.br/vagas-de-Redes-de-Computadores"]
 
 subject = 1
@@ -68,14 +63,14 @@ for url in urls:
 
     #Find the load button and click
     i = 0
-    while (i < 20):
+    while True:
         try:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             button = driver.find_element_by_xpath('//*[@id="maisVagas"]')
             button.click()
             sleep(2)
-            i = i + 1
         except:
-            i = 5000
+            break
         
     #html parsing
     html = driver.page_source
@@ -136,3 +131,7 @@ driver.quit()
 
 #close file
 file.close()
+
+if __name__ == '__main__':
+    from doctest import testmod
+    testmod()

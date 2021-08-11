@@ -8,8 +8,9 @@ import os
 from unicodedata import normalize
 import csv
 
+#specify chrome locations
 driver_location = "../chromedriver"
-binary_location = "/usr/bin/google-chrome-stable"
+binary_location = "/usr/bin/chromium"
 
 option = webdriver.ChromeOptions()
 option.binary_location = binary_location
@@ -51,15 +52,14 @@ for url in urls:
     driver.get(url)
 
     #Find the load button and click
-    i = 0
-    while (i < 30):
+    while True:
         try:
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             button = driver.find_element_by_xpath('//*[@id="maisVagas"]')
             button.click()
-            sleep(3)
-            i = i + 1
+            sleep(2)
         except:
-            i = 5000
+            break
             
     #html parsing
     html = driver.page_source
