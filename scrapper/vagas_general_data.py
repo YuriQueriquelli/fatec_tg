@@ -12,10 +12,12 @@ import csv
 driver_location = "../chromedriver"
 binary_location = "/usr/bin/chromium"
 
-option = webdriver.ChromeOptions()
-option.binary_location = binary_location
+#add options
+options = webdriver.ChromeOptions()
+options.add_argument('--start-fullscreen')
+options.binary_location = binary_location
 
-driver = webdriver.Chrome(executable_path=driver_location, chrome_options=option)
+driver = webdriver.Chrome(executable_path=driver_location, options=options)
 
 def listToString(s):  
     
@@ -40,8 +42,7 @@ if __name__ == '__main__':
 #today
 today = date.today()
 
-#Open webdriver and site vagas.com
-
+#Open webdriver at site vagas.com
 urls = ["https://www.vagas.com.br/vagas-de-campinas", "https://www.vagas.com.br/vagas-de-s%C3%A3o-paulo",
          "https://www.vagas.com.br/vagas-de-Indaiatuba", "https://www.vagas.com.br/vagas-em-sao-paulo"
          , "https://www.vagas.com.br/vagas-de-sorocaba", "https://www.vagas.com.br/vagas-de-Piracicaba"]
@@ -55,6 +56,7 @@ for url in urls:
     while True:
         try:
             driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            sleep(2)
             button = driver.find_element_by_xpath('//*[@id="maisVagas"]')
             button.click()
             sleep(2)
