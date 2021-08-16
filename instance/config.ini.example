@@ -1,6 +1,6 @@
 [postgresql]
-host=localhost
-database=suppliers
-user=postgres
-password=sensedata
+host=
+database=
+user=
+password=
 port=5432
