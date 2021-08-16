@@ -35,6 +35,7 @@ labels = model.predict(data_general['Descricao'])
 
 data_predict = pd.DataFrame(labels, columns={"Predict"})
 
+
 # WIP -> concat and save new dataFrame,  problaby is going to be easyer to just save de predictions
 #print(data_predict.head())
 

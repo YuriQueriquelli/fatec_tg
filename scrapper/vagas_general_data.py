@@ -117,6 +117,7 @@ with open('../db/reports/vagas_general_data.csv', 'a', newline='') as file:
     writer.writerows(row_list)
 
 
+
 #close chrome
 driver.quit()
 

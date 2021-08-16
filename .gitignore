@@ -2,3 +2,4 @@
 *.csv
 Pipfile
 Pipfile.lock
+*.ini
