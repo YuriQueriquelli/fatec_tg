@@ -8,10 +8,12 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+import pickle
 
 #if you do not use linux, I'm sorry...
 data_formated = pd.read_csv(r'../db/vagas_formated_data.csv', sep = ';')
 data_general = pd.read_csv(r'../db/vagas_general_data.csv', sep = ';')
+
 
 # Defining all the categories
 categories = data_formated['Materia'].unique()
@@ -25,9 +27,13 @@ model.fit(data_formated['Descricao'], data_formated['Materia'])
 # Try to predict general text
 labels = model.predict(data_formated['Descricao'])
 
+f = open('my_classifier.pickle', 'wb')
+pickle.dump(labels, f)
+f.close()
+
 data_predict = pd.DataFrame(labels, columns={"Predict"})
 
-# Save accuracy score of this actua sample
+# Save accuracy score of this actual sample
 accuracy = accuracy_score(data_formated['Materia'], data_predict)
 
 # New application of model, now to general data
@@ -39,7 +45,7 @@ data_predict = pd.DataFrame(labels, columns={"Predict"})
 # WIP -> concat and save new dataFrame,  problaby is going to be easyer to just save de predictions
 #print(data_predict.head())
 
-#result_final = pd.merge(data_general, data_predict)
+#result_final = dp.merge(data_general, data_predict)
 
 #print(result_final.head())
 

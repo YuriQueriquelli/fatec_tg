@@ -54,8 +54,8 @@ def main():
 
     #Open webdriver at site vagas.com
     urls = ["https://www.vagas.com.br/vagas-de-campinas", "https://www.vagas.com.br/vagas-de-s%C3%A3o-paulo",
-            "https://www.vagas.com.br/vagas-de-Indaiatuba", "https://www.vagas.com.br/vagas-em-sao-paulo"
-            , "https://www.vagas.com.br/vagas-de-sorocaba", "https://www.vagas.com.br/vagas-de-Piracicaba"]
+            "https://www.vagas.com.br/vagas-de-Indaiatuba", "https://www.vagas.com.br/vagas-em-sao-paulo", 
+            "https://www.vagas.com.br/vagas-de-sorocaba", "https://www.vagas.com.br/vagas-de-Piracicaba"]
 
     row_list = [[ "Titulo", "link", "Descricao"]]
 
