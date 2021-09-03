@@ -10,6 +10,12 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 import pickle
 
+def saveclassifier():
+    f = open('my_classifier.pickle','rb')
+    classifier = pickle.load(f)
+    classifier.train()
+    f.close()
+
 #if you do not use linux, I'm sorry...
 data_formated = pd.read_csv(r'../db/vagas_formated_data.csv', sep = ';')
 data_general = pd.read_csv(r'../db/vagas_general_data.csv', sep = ';')
@@ -30,6 +36,7 @@ labels = model.predict(data_formated['Descricao'])
 f = open('my_classifier.pickle', 'wb')
 pickle.dump(labels, f)
 f.close()
+
 
 data_predict = pd.DataFrame(labels, columns={"Predict"})
 

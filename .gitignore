@@ -1,5 +1,6 @@
 # Files
 *.csv
+*.ini
+links.txt
 Pipfile
 Pipfile.lock
-*.ini
