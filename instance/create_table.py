@@ -4,7 +4,7 @@ from config import config
 def create_tables():
     commands = (
     """
-    DROP TABLE IF EXISTS materias;
+    DROP TABLE IF EXISTS curso;
     """,
     """
     DROP TABLE IF EXISTS vaga_formatada;
@@ -13,9 +13,9 @@ def create_tables():
     DROP TABLE IF EXISTS vaga_geral;
     """,
     """
-        CREATE TABLE materias(
-            materia_id SERIAL PRIMARY KEY,
-            materia_titulo VARCHAR(50) NOT NULL
+        CREATE TABLE curso(
+            curso_id SERIAL PRIMARY KEY,
+            curso_titulo VARCHAR(50) NOT NULL
         )
         """,
         """
@@ -23,7 +23,7 @@ def create_tables():
             formatada_url VARCHAR(255) NOT NULL PRIMARY KEY,
             formatada_titulo VARCHAR NOT NULL,
             formatada_desc TEXT NOT NULL,
-            materia_id INT NOT NULL REFERENCES materias(materia_id)
+            materia_id INT NOT NULL REFERENCES curso(curso_id)
         )
         """,
         """
@@ -33,7 +33,7 @@ def create_tables():
             geral_cargo VARCHAR NOT NULL,
             geral_desc VARCHAR NOT NULL,
             geral_data DATE,
-            materia_id INT NOT NULL REFERENCES materias(materia_id)
+            materia_id INT NOT NULL REFERENCES curso(curso_id)
         )
         """)
     conn = None
