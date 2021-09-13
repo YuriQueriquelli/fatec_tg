@@ -1,3 +1,5 @@
+import psycopg2
+from instance.config import config
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options  import Options
@@ -11,8 +13,8 @@ import csv
 from configparser import ConfigParser
 import argparse
 
-def listToString(s):  
-    
+
+def listToString(s):      
     # initialize an empty string 
     str1 = " "  
     
@@ -28,11 +30,28 @@ def remover_acentos(txt):
     return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
 
 
-def main():
+def insert_vaga_formatada(text_subject, vaga_title, vaga_link, join_vaga_desc):
+    sql = "INSERT INTO vaga_formatada(formatada_url, formatada_titulo, formatada_desc, materia_id) VALUES(%s, %s, %s, %s)"
+    conn = None
+    try:
+        params =  config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute("""INSERT INTO vaga_formatada(formatada_url, formatada_titulo, formatada_desc, materia_id) VALUES(%s, %s, %s, %s);""",
+                    (text_subject, vaga_title, vaga_link, join_vaga_desc))
 
+        conn.commit()
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def main():
     parser = argparse.ArgumentParser(description='choose some browser chrome or chromium')
     parser.add_argument('-b', action='store', dest='browser', help='write chrome or chromium')
-
     browser = parser.parse_args().browser
 
     if browser == 'chrome':
@@ -43,7 +62,7 @@ def main():
         print('choose a valid browser! chrome or chromium')
 
     #specify chrome locations
-    driver_location = "../chromedriver"
+    driver_location = "chromedriver"
 
     #add options
     options = webdriver.ChromeOptions()
@@ -56,28 +75,26 @@ def main():
     today = date.today()
 
     #Open webdriver at site vagas.com
-    urls = ["https://www.vagas.com.br/vagas-de-ti", "https://www.vagas.com.br/vagas-de-An%C3%A1lise-e-Desenvolvimento-de-Sistemas", "https://www.vagas.com.br/vagas-de-Com%C3%A9rcio-Exterior", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-Empresarial", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-de-Servi%C3%A7os", "https://www.vagas.com.br/vagas-de-Log%C3%ADstica", "https://www.vagas.com.br/vagas-de-Redes-de-Computadores"]
+    urls = ["https://www.vagas.com.br/vagas-de-ti", "https://www.vagas.com.br/vagas-de-Com%C3%A9rcio-Exterior", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-Empresarial", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-de-Servi%C3%A7os", "https://www.vagas.com.br/vagas-de-Log%C3%ADstica", "https://www.vagas.com.br/vagas-de-Redes-de-Computadores"]
 
     subject = 1
 
     row_list = [["Materia" , "Titulo", "link", "Descricao"]]
 
     for url in urls:
-        driver.get(url)
-    
+        driver.get(url)   
+
         if subject == 1:
             text_subject = "Análise e Desenvolvimento de Sistemas"
         elif subject == 2:
-            text_subject = "Análise e Desenvolvimento de Sistemas"
-        elif subject == 3:
             text_subject = "Comércio Exterior"
-        elif subject == 4:
+        elif subject == 3:
             text_subject = "Gestão Empresarial"
-        elif subject == 5:
+        elif subject == 4:
             text_subject = "Gestão de Serviços"
-        elif subject == 6:
+        elif subject == 5:
             text_subject = "Logística Aeroportuária"
-        elif subject == 7:
+        elif subject == 6:
             text_subject = "Redes de Computadores"
 
         #Find the load button and click
@@ -133,11 +150,17 @@ def main():
                 vaga_title.replace(',', ' ')
                 vaga_link.replace(',', ' ')
 
+                #Insert BD
+                insert_vaga_formatada(vaga_link, vaga_title, join_vaga_desc, subject)
+                
+                #CSV file
                 actual_list = [text_subject, vaga_title, vaga_link, join_vaga_desc]   
                 row_list.append(actual_list.replace(";","-"))
         
             except:
                 continue
+
+        subject =  subject + 1
 
 
     with open('../db/vagas_formated_data.csv', 'a', newline='') as file:
