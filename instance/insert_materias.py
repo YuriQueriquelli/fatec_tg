@@ -19,11 +19,11 @@ def insert_cursos(cursos):
 
 if __name__ == '__main__':
     insert_cursos([
-        ('Indefinido',),
         ('Análise e Desenvolvimento de Sistemas',),
         ('Comércio Exterior',),
         ('Gestão Empresarial',),
         ('Gestão de Serviços',),
         ('Logística Aeroportuária',),
-        ('Redes de Computadores',)
+        ('Redes de Computadores',),
+        ('Indefinido',)
     ])

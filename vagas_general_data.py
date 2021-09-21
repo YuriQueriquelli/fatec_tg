@@ -1,4 +1,5 @@
 from selenium import webdriver
+import psycopg2
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options  import Options
 from bs4 import BeautifulSoup
@@ -22,6 +23,23 @@ def listToString(s):
       
     # return string   
     return str1  
+
+def insert_vaga_gerals(vaga_title, vaga_link, join_vaga_desc):
+    conn = None
+    try:
+        params =  config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute("""INSERT INTO vaga_geral(geral_url, geral_titulo, geral_cargo, geral_desc, geral_data, materia_id) VALUES(%s, %s, %s, %s, %s, %s)""",
+                    (vaga_link, vaga_title, vaga_link, join_vaga_desc))
+
+        conn.commit()
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 def remover_acentos(txt):
     return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
@@ -101,6 +119,44 @@ def main():
                 html_desc = driver.page_source
                 soup_vaga_desc = BeautifulSoup(html_desc, 'html.parser')
 
+                #extract company name
+                container_vaga_empresa = vagas.findAll("span", {"class": "emprVaga"})
+                vaga_empresa = container_vaga_empresa[0].text.strip()
+
+
+                #extract job publication date    
+                container_data = vagas.findAll("span", {"class": "data-publicacao"})
+                vaga_data = container_data[0].text
+
+                #extract job relevance
+                container_vaga_nivel = vagas.findAll("span", {"class": "nivelVaga"})
+                vaga_nivel = container_vaga_nivel[0].text.strip()
+
+                if vaga_data == "Hoje" :
+                    vaga_data = today.strftime("%d/%m/%Y")
+                elif vaga_data == "Ontem" :
+                    today = today - timedelta(days=1)
+                    vaga_data = today.strftime("%d/%m/%Y")
+                elif vaga_data == "Há 2 dias" :
+                    today = today - timedelta(days=2)
+                    vaga_data = today.strftime("%d/%m/%Y")
+                elif vaga_data == "Há 3 dias" :
+                    today = today - timedelta(days=3)
+                    vaga_data = today.strftime("%d/%m/%Y")
+                elif vaga_data == "Há 4 dias" :
+                    today = today - timedelta(days=4)
+                    vaga_data = today.strftime("%d/%m/%Y")
+                elif vaga_data == "Há 5 dias" :
+                    oday = today - timedelta(days=5)
+                    vaga_data = today.strftime("%d/%m/%Y")
+                elif vaga_data == "Há 6 dias" :
+                    today = today - timedelta(days=6)
+                    vaga_data = today.strftime("%d/%m/%Y")
+                elif vaga_data == "Há 7 dias" :
+                    today = today - timedelta(days=7)
+                    vaga_data = today.strftime("%d/%m/%Y")
+                else:
+                    vaga_data = vaga_data            
             
                 container_vaga_desc = soup_vaga_desc.find("div","job-tab-content job-description__text texto")
                 vaga_desc_texto = container_vaga_desc.get_text()
@@ -115,7 +171,7 @@ def main():
                 vaga_title.replace(',', ' ')
                 vaga_link.replace(',', ' ')
 
-                actual_list = [vaga_title, vaga_link, join_vaga_desc]   
+                actual_list = [vaga_title, vaga_link, join_vaga_desc, vaga_data]   
                 row_list.append(actual_list.replace(";","-"))
         
             except:

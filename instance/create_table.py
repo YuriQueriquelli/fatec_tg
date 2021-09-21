@@ -23,7 +23,7 @@ def create_tables():
             formatada_url VARCHAR(255) NOT NULL PRIMARY KEY,
             formatada_titulo VARCHAR NOT NULL,
             formatada_desc TEXT NOT NULL,
-            materia_id INT NOT NULL REFERENCES curso(curso_id)
+            curso_id INT NOT NULL REFERENCES curso(curso_id)
         )
         """,
         """
@@ -31,9 +31,9 @@ def create_tables():
             geral_url VARCHAR(255) NOT NULL PRIMARY KEY,
             geral_titulo VARCHAR NOT NULL,
             geral_cargo VARCHAR NOT NULL,
-            geral_desc VARCHAR NOT NULL,
+            geral_desc TEXT NOT NULL,
             geral_data DATE,
-            materia_id INT NOT NULL REFERENCES curso(curso_id)
+            curso_id INT NOT NULL REFERENCES curso(curso_id)
         )
         """)
     conn = None

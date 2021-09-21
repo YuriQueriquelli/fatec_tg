@@ -31,13 +31,12 @@ def remover_acentos(txt):
 
 
 def insert_vaga_formatada(text_subject, vaga_title, vaga_link, join_vaga_desc):
-    sql = "INSERT INTO vaga_formatada(formatada_url, formatada_titulo, formatada_desc, materia_id) VALUES(%s, %s, %s, %s)"
     conn = None
     try:
         params =  config()
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
-        cur.execute("""INSERT INTO vaga_formatada(formatada_url, formatada_titulo, formatada_desc, materia_id) VALUES(%s, %s, %s, %s);""",
+        cur.execute("""INSERT INTO vaga_formatada(formatada_url, formatada_titulo, formatada_desc, curso_id) VALUES(%s, %s, %s, %s);""",
                     (text_subject, vaga_title, vaga_link, join_vaga_desc))
 
         conn.commit()
