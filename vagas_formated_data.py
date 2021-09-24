@@ -9,7 +9,6 @@ from datetime import date, timedelta
 import os
 from unicodedata import normalize
 import csv
-#from connect import config #WIP connect to postgress 
 from configparser import ConfigParser
 import argparse
 
