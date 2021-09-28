@@ -182,7 +182,7 @@ def main():
                 continue
 
 
-    with open('../db/reports/vagas_general_data.csv', 'a', newline='') as file:
+    with open('/db/reports/vagas_general_data.csv', 'a', newline='') as file:
         writer = csv.writer(file, delimiter=';')
         writer.writerows(row_list)
 

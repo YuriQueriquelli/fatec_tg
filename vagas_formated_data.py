@@ -161,7 +161,7 @@ def main():
         subject =  subject + 1
 
 
-    with open('../db/vagas_formated_data.csv', 'a', newline='') as file:
+    with open('/db/vagas_formated_data.csv', 'a', newline='') as file:
         writer = csv.writer(file, delimiter=';')
         writer.writerows(row_list)
 
