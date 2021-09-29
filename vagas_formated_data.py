@@ -37,7 +37,6 @@ def insert_vaga_formatada(text_subject, vaga_title, vaga_link, join_vaga_desc):
         cur = conn.cursor()
         cur.execute("""INSERT INTO vaga_formatada(formatada_url, formatada_titulo, formatada_desc, curso_id) VALUES(%s, %s, %s, %s);""",
                     (text_subject, vaga_title, vaga_link, join_vaga_desc))
-
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
