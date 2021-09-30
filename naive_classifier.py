@@ -37,8 +37,10 @@ def postgresql_to_dataframe(select_query, column_names):
     return pd.DataFrame(tupples, columns=column_names)
     
 data_formated = postgresql_to_dataframe("SELECT c.curso_titulo, v.formatada_desc FROM vaga_formatada v INNER JOIN curso c ON c.curso_id = v.curso_id;", (r'curso_id', r'formatada_desc'))
-data_geral = postgresql_to_dataframe("SELECT geral_desc, curso_id FROM vaga_geral WHERE curso_id = 7;", (r'geral_desc', r'curso_id'))  
+data_geral = postgresql_to_dataframe("SELECT curso_id, geral_desc FROM vaga_geral WHERE curso_id = 7;", (r'curso_id', r'geral_desc'))  
 
+print(data_formated.head())
+print(data_geral.head())
 
 #f = open('my_classifier.pickle', 'wb')
 #pickle.dump(labels, f)

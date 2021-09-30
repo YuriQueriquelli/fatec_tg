@@ -135,7 +135,7 @@ def main():
             try:
                 container_vaga_desc = soup_vaga_desc.find("div","job-tab-content job-description__text texto")
                 vaga_desc_texto = container_vaga_desc.get_text()
-                vaga_desc_texto = vaga_desc_texto.replace(",", "-").replace(";","-")
+                vaga_desc_texto = vaga_desc_texto.replace(",", "-").replace(";","-").replace("Descrição"," ")
                 vaga_desc_words = vaga_desc_texto.split(' ')
                 join_vaga_desc = listToString(vaga_desc_words)
             
@@ -160,7 +160,7 @@ def main():
         subject =  subject + 1
 
 
-    with open('/db/vagas_formated_data.csv', 'a', newline='') as file:
+    with open('./db/vagas_formated_data.csv', 'a', newline='') as file:
         writer = csv.writer(file, delimiter=';')
         writer.writerows(row_list)
 
