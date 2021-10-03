@@ -72,7 +72,14 @@ def main():
     today = date.today()
 
     #Open webdriver at site vagas.com
-    urls = ["https://www.vagas.com.br/vagas-de-ti", "https://www.vagas.com.br/vagas-de-Com%C3%A9rcio-Exterior", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-Empresarial", "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-de-Servi%C3%A7os", "https://www.vagas.com.br/vagas-de-Log%C3%ADstica", "https://www.vagas.com.br/vagas-de-Redes-de-Computadores"]
+    urls = [
+        "https://www.vagas.com.br/vagas-de-ti", 
+        "https://www.vagas.com.br/vagas-de-Com%C3%A9rcio-Exterior", 
+        "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-Empresarial", 
+        "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-de-Servi%C3%A7os", 
+        "https://www.vagas.com.br/vagas-de-Log%C3%ADstica", 
+        "https://www.vagas.com.br/vagas-de-rede"
+        ]
 
     subject = 1
 

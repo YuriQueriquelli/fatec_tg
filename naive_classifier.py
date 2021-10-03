@@ -19,7 +19,7 @@ def saveclassifier():
     classifier.train()
     f.close()
 
-#Tranform a SELECT query into a pandas dataframe
+#Transform a SELECT query into a pandas dataframe
 def postgresql_to_dataframe(select_query, column_names):
     conn = None
     try:
@@ -31,20 +31,46 @@ def postgresql_to_dataframe(select_query, column_names):
         print("Error: %s" % error)
         cur.close()
         return 1
-    
+        
     tupples = cur.fetchall()
     cur.close()
     return pd.DataFrame(tupples, columns=column_names)
+
+#Update table vaga_geral
+def table_update(url, previsao):
+    if previsao == 'Análise e Desenvolvimento de Sistemas':
+        previsao = 1
+    elif previsao == 'Comércio Exterior':
+        previsao = 2
+    elif previsao == 'Gestão Empresarial':
+        previsao = 3
+    elif previsao == 'Gestão de Serviços':
+        previsao = 4
+    elif previsao == 'Logística Aeroportuária':
+        previsao = 5
+    elif previsao == 'Redes de Computadores':
+        previsao == 6
+    else:
+        return 1
+    
+    conn = None
+    try:
+        params = config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute("""UPDATE vaga_geral SET curso_id = %s WHERE geral_url = %s""",(previsao, url))
+        conn.commit()
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print("Error: %s" % error)
+        cur.close()
+        return 2
+    finally:
+        if conn is not None:
+            conn.close()
     
 data_formated = postgresql_to_dataframe("SELECT c.curso_titulo, v.formatada_desc FROM vaga_formatada v INNER JOIN curso c ON c.curso_id = v.curso_id;", (r'curso_id', r'formatada_desc'))
-data_geral = postgresql_to_dataframe("SELECT curso_id, geral_desc FROM vaga_geral WHERE curso_id = 7;", (r'curso_id', r'geral_desc'))  
-
-print(data_formated.head())
-print(data_geral.head())
-
-#f = open('my_classifier.pickle', 'wb')
-#pickle.dump(labels, f)
-#f.close()
+data_geral = postgresql_to_dataframe("SELECT geral_url, geral_desc FROM vaga_geral WHERE curso_id = 7;", (r'geral_url', r'geral_desc'))  
 
 # Defining all the categories
 categories = data_formated['curso_id'].unique()
@@ -52,15 +78,19 @@ categories = data_formated['curso_id'].unique()
 # Defining base model
 model = make_pipeline(TfidfVectorizer(), MultinomialNB())
 
- 
 # insert values to model
-model.fit(data_formated['curso_id'], data_formated['formatada_desc'])
-
-# Try to predict general text
-labels = model.predict(data_formated['formatada_desc'])
+model.fit(data_formated['formatada_desc'], data_formated['curso_id'])
 
 # New application of model, now to general data
-labels = model.predict(data_geral['geral_desc'])
+#labels = model.predict(data_geral['geral_desc'])
+
+for index, row in data_geral.iterrows():
+    text = row['geral_desc']
+    previsao = model.predict([text])
+    previsao = str(previsao).replace("'", "").replace("[", "").replace("]", "")
+    table_update(row['geral_url'], previsao)
+    print(previsao , row['geral_url'])   
+    
 
 
 # WIP -> concat and save new dataFrame,  problaby is going to be easyer to just save de predictions
