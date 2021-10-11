@@ -77,7 +77,7 @@ def main():
         "https://www.vagas.com.br/vagas-de-Com%C3%A9rcio-Exterior", 
         "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-Empresarial", 
         "https://www.vagas.com.br/vagas-de-Gest%C3%A3o-de-Servi%C3%A7os", 
-        "https://www.vagas.com.br/vagas-de-Log%C3%ADstica", 
+        "https://www.vagas.com.br/vagas-de-logistica?a%5B%5D=26", 
         "https://www.vagas.com.br/vagas-de-rede"
         ]
 
