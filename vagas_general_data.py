@@ -5,7 +5,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options  import Options
 from bs4 import BeautifulSoup
 from time import sleep
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
+import datetime
 import os
 from unicodedata import normalize
 import csv
@@ -132,6 +133,11 @@ def main():
                 container_vaga_nivel = vagas.findAll("span", {"class": "nivelVaga"})
                 vaga_nivel = container_vaga_nivel[0].text.strip()
 
+                format_str = '%d/%m/%Y'
+
+
+                print(vaga_data)
+
                 if vaga_data == "Hoje" :
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Ontem" :
@@ -156,7 +162,11 @@ def main():
                     today = today - timedelta(days=7)
                     vaga_data = today.strftime("%Y/%m/%d")
                 else:
-                    vaga_data = today.strftime("%Y/%m/%d")           
+                    vaga_data = datetime.datetime.strptime(vaga_data, format_str)
+                    vaga_data = vaga_data.strftime("%Y/%m/%d")     
+
+                print(vaga_data)
+                  
             
                 container_vaga_desc = soup_vaga_desc.find("div","job-tab-content job-description__text texto")
                 vaga_desc_texto = container_vaga_desc.get_text()
