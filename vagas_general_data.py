@@ -33,7 +33,6 @@ def insert_vaga_geral(vaga_link, vaga_title, vaga_nivel, join_vaga_desc, vaga_da
         cur = conn.cursor()
         cur.execute("""INSERT INTO vaga_geral(geral_url, geral_titulo, geral_cargo, geral_desc, geral_data, curso_id) VALUES(%s, %s, %s, %s, %s, %s)""",
                     (vaga_link, vaga_title, vaga_nivel, join_vaga_desc, vaga_data, 7))
-
         conn.commit()
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -148,7 +147,7 @@ def main():
                     today = today - timedelta(days=4)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 5 dias" :
-                    oday = today - timedelta(days=5)
+                    today = today - timedelta(days=5)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 6 dias" :
                     today = today - timedelta(days=6)
@@ -157,7 +156,7 @@ def main():
                     today = today - timedelta(days=7)
                     vaga_data = today.strftime("%Y/%m/%d")
                 else:
-                    vaga_data = vaga_data.strftime("%Y/%m/%d")            
+                    vaga_data = today.strftime("%Y/%m/%d")           
             
                 container_vaga_desc = soup_vaga_desc.find("div","job-tab-content job-description__text texto")
                 vaga_desc_texto = container_vaga_desc.get_text()

@@ -11,6 +11,7 @@ from unicodedata import normalize
 import csv
 from configparser import ConfigParser
 import argparse
+#from vagas_general_data import insert_vaga_geral
 
 
 def listToString(s):      
@@ -25,8 +26,26 @@ def listToString(s):
     # return string   
     return str1  
 
+
 def remover_acentos(txt):
     return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
+
+
+def insert_vaga_geral(vaga_link, vaga_title, vaga_nivel, join_vaga_desc, vaga_data, curso_id):
+    conn = None
+    try:
+        params =  config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute("""INSERT INTO vaga_geral(geral_url, geral_titulo, geral_cargo, geral_desc, geral_data, curso_id) VALUES(%s, %s, %s, %s, %s, %s)""",
+                    (vaga_link, vaga_title, vaga_nivel, join_vaga_desc, vaga_data, curso_id))
+        conn.commit()
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def insert_vaga_formatada(text_subject, vaga_title, vaga_link, join_vaga_desc):
@@ -139,6 +158,40 @@ def main():
             html_desc = driver.page_source
             soup_vaga_desc = BeautifulSoup(html_desc, 'html.parser')
 
+            #extract job relevance
+            container_vaga_nivel = vagas.findAll("span", {"class": "nivelVaga"})
+            vaga_nivel = container_vaga_nivel[0].text.strip()
+
+            #extract job publication date    
+            container_data = vagas.findAll("span", {"class": "data-publicacao"})
+            vaga_data = container_data[0].text
+
+            if vaga_data == "Hoje" :
+                vaga_data = today.strftime("%Y/%m/%d")
+            elif vaga_data == "Ontem" :
+                today = today - timedelta(days=1)
+                vaga_data = today.strftime("%Y/%m/%d")
+            elif vaga_data == "Há 2 dias" :
+                today = today - timedelta(days=2)
+                vaga_data = today.strftime("%Y/%m/%d")
+            elif vaga_data == "Há 3 dias" :
+                today = today - timedelta(days=3)
+                vaga_data = today.strftime("%Y/%m/%d")
+            elif vaga_data == "Há 4 dias" :
+                today = today - timedelta(days=4)
+                vaga_data = today.strftime("%Y/%m/%d")
+            elif vaga_data == "Há 5 dias" :
+                today = today - timedelta(days=5)
+                vaga_data = today.strftime("%Y/%m/%d")
+            elif vaga_data == "Há 6 dias" :
+                today = today - timedelta(days=6)
+                vaga_data = today.strftime("%Y/%m/%d")
+            elif vaga_data == "Há 7 dias" :
+                today = today - timedelta(days=7)
+                vaga_data = today.strftime("%Y/%m/%d")
+            else:
+                vaga_data = today.strftime("%Y/%m/%d")
+
             try:
                 container_vaga_desc = soup_vaga_desc.find("div","job-tab-content job-description__text texto")
                 vaga_desc_texto = container_vaga_desc.get_text()
@@ -156,7 +209,8 @@ def main():
 
                 #Insert BD
                 insert_vaga_formatada(vaga_link, vaga_title, join_vaga_desc, subject)
-                
+                insert_vaga_geral(vaga_link, vaga_title, vaga_nivel, join_vaga_desc, vaga_data, subject)
+
                 #CSV file
                 actual_list = [text_subject, vaga_title, vaga_link, join_vaga_desc]   
                 row_list.append(actual_list.replace(";","-"))
