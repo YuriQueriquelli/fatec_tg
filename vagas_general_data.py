@@ -141,25 +141,18 @@ def main():
                 if vaga_data == "Hoje" :
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Ontem" :
-                    today = today - timedelta(days=1)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 2 dias" :
-                    today = today - timedelta(days=2)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 3 dias" :
-                    today = today - timedelta(days=3)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 4 dias" :
-                    today = today - timedelta(days=4)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 5 dias" :
-                    today = today - timedelta(days=5)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 6 dias" :
-                    today = today - timedelta(days=6)
                     vaga_data = today.strftime("%Y/%m/%d")
                 elif vaga_data == "Há 7 dias" :
-                    today = today - timedelta(days=7)
                     vaga_data = today.strftime("%Y/%m/%d")
                 else:
                     vaga_data = datetime.datetime.strptime(vaga_data, format_str)
